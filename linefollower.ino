@@ -59,9 +59,9 @@ void loop() {
     case 0b10000: move(255, 255, 0,1,1,0); break;
 
     case 0b00110: move(255, 255, 1,0,0,1); break; //right
-    case 0b00010: move(255, 255, 1,0,0,1); break;
-    case 0b00110: move(255, 255, 1,0,0,1); break;
-    case 0b00110: move(255, 255, 1,0,0,1); break;
+    case 0b00111: move(255, 255, 1,0,0,1); break;
+    case 0b00011: move(255, 255, 1,0,0,1); break;
+    case 0b00001: move(255, 255, 1,0,0,1); break;
 
     case 0b00000: move(255, 255, 0,1,0,1); break; //back
     default: move(255, 255, 1,0,1,0); break; //def
