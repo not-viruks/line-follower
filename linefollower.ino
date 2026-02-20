@@ -56,31 +56,31 @@ void loop() {
     {
       speedR*=2;
       speedL*=2;
-      move(speedL,speedR, 1,0,1,0);
+      move(speedL,speedR, 0,1,0,1);
       state = -1;
     }
     else if(pattern <= 1111 && pattern > 0)
     {
       speedL*=2;
       speedR*=2;
-      move(speedL,speedR, 0,1,0,1);
+      move(speedL,speedR, 1,0,1,0);
       state = 1;
     }
     else
     {
       if(state==-1){
-        move(40, 40, 1,0,1,0);
-      }
-      else if(state==1){
         move(40, 40, 0,1,0,1);
       }
+      else if(state==1){
+        move(40, 40, 1,0,1,0);
+      }
       else{
-        move(40, 40, 0,1,1,0);
+        move(40, 40, 1,0,0,1);
       }
     }
     pattern = fpattern();
   }
-  move(speedL,speedR, 0,1,1,0);
+  move(speedL,speedR, 1,0,0,1);
   
 }
 
