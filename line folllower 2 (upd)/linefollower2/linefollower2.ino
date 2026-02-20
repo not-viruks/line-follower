@@ -9,13 +9,20 @@ int enr=6;
 
 
 // ===== SENSORS =====
-int sl2=2;
-int sl1=3;
-int smid=4;
-int sr1=7;
-int sr2=12;
+  int svl2;
+  int svl1;
+  int svm;
+  int svr1;
+  int svr2;
 
-int svl2, svl1, svm, svr1, svr2;
+#define NUM_SENSORS 8
+
+int sensorPins[NUM_SENSORS] = {A0, A1, A2, A3, A4, A5, A6, A7};
+int sensorValues[NUM_SENSORS];
+int lineFound[NUM_SENSORS];
+
+
+int threshold = 500;
 
 int speedR;
 int speedL;
@@ -30,23 +37,15 @@ void setup() {
   pinMode(enr,OUTPUT);
   pinMode(enl,OUTPUT);
 
-  pinMode(sl2,INPUT_PULLUP);
-  pinMode(sl1,INPUT_PULLUP);
-  pinMode(smid,INPUT_PULLUP);
-  pinMode(sr1,INPUT_PULLUP);
-  pinMode(sr2,INPUT_PULLUP);
-
   Serial.begin(9600);
   Serial.println("START");
 }
 
 void loop() {
-  
   speedL=255;
   speedR=255;
   pattern = fpattern();
   
-  Serial.println(pattern);
   
   while(pattern != 100){
     speedR=5;
@@ -79,18 +78,28 @@ void loop() {
       }
     }
     pattern = fpattern();
+    analogRead(sensorPins[2]);
   }
   move(speedL,speedR, 0,1,1,0);
-  
+  Serial.println(pattern);
 }
 
 int fpattern()
 {
-  svl2 = digitalRead(sl2) == HIGH? 10000:0;
-  svl1 = digitalRead(sl1) == HIGH? 1000:0;
-  svm  = digitalRead(smid) == HIGH? 100:0;
-  svr1 = digitalRead(sr1) == HIGH? 10:0;
-  svr2 = digitalRead(sr2) == HIGH? 1:0;
+  for (int i = 0; i < NUM_SENSORS; i++) {
+    sensorValues[i] = analogRead(sensorPins[i]);
+
+    if (sensorValues[i] < threshold) { 
+       lineFound[i] = 1;
+    }
+  }
+
+  svl2 = lineFound[0] == HIGH? 10000:0;
+  svl1 = lineFound[1] == HIGH? 1000:0;
+  svm  = lineFound[2] == HIGH? 100:0;
+  svr1 = lineFound[3] == HIGH? 10:0;
+  svr2 = lineFound[4] == HIGH? 1:0;
+
   int pattern = svl2+svl1+svm+svr1+svr2;
   return pattern;
 }
